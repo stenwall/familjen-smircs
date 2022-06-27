@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
+
+// This is the chainId your dApp will work on.
+const activeChainId = ChainId.Mainnet;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <ThirdwebProvider desiredChainId={activeChainId}>
     <App />
-  </React.StrictMode>
+  </ThirdwebProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

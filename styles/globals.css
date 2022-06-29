@@ -1,38 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
-/* Change the values in here to match your branding */
-:root {
-  /* Background color of the page */
-  --background-color: #1c1e21;
-
-  /* Color of the text/words */
-  --text-color: #fff;
-
-  /* Main color of your brand */
-  --color-primary: #f213a4;
-
-  /* Secondary color of your brand */
-  --color-secondary: #418dff;
-
-  /* Which font you want to use */
-  --font: "Inter", sans-serif;
-
-  /* Color of the border around items */
-  --border-color: rgba(255, 255, 255, 0.5);
+@font-face {
+  font-family: 'Merchant copy';
+  src: url('https://uploads-ssl.webflow.com/6278d92c988fe4187644f025/6278d92c988fe470e444f032_MERCHANT-COPY.DOUBLESIZE.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Merchant copy';
+  src: url('https://uploads-ssl.webflow.com/6278d92c988fe4187644f025/6278d92c988fe4d07e44f033_MERCHANT-COPY.REGULAR.TTF') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* --- Don't need to modify below here --- */
-
-/* Default design values of the entire document */
-
 body {
-  background: var(--background-color);
-  font-family: var(--font);
-  color: var(--text-color);
-
-  display: flex;
+  background: #ECECE1;
+  font-family: monospace;
   margin: 0;
-  text-align: center;
+  font-family: 'Merchant copy';
 }
 
 /* Box sizing rules */

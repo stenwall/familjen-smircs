@@ -1,50 +1,50 @@
 .container {
-  margin-top: 96px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  /* width: 100vw; */
 }
 
 .previewImage {
   height: 500px;
   width: 500px;
   border-radius: 16px;
-  border: 1px solid var(--border-color);
+  /* border: 1px solid var(--border-color); */
   padding: 8px;
 }
 
 .mintInfoContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0 24px;
   min-height: 720px;
-  max-width: 95vw;
+  max-width: 700px;
   gap: 2%;
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
 }
 
-.infoSide {
+.infoTop {
+  background-color: #376071;
+  color: #FFEF00;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 45%;
-  height: 100%;
+  width: 100%;
+}
+
+.infoWallet {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .description {
   opacity: 0.7;
   font-size: 1rem;
-}
-
-.imageSide {
-  width: 25%;
-  height: 100%;
 }
 
 .image {
@@ -56,12 +56,12 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin: 12px 0;
 }
 
 .mainButton {
+  font-family: 'Merchant Copy';
   cursor: pointer;
   display: inline-flex;
   appearance: none;
@@ -77,18 +77,10 @@
   transition-property: background-color, border-color, color, fill, stroke,
     opacity, box-shadow, transform;
   transition-duration: 200ms;
-  height: 3rem;
-  min-width: 3rem;
-  font-size: 1rem;
-  background: #e5e5ea;
-  background-image: linear-gradient(
-    to left,
-    var(--color-primary) 0%,
-    var(--color-secondary) 101.52%
-  );
-  color: #fff;
-  padding: 20px;
-  text-align: center;
+  font-size: 20px;
+  background: #376071;
+  color: #FFEF00;
+  padding: 0 10px;
   border-radius: 9999px;
   border-style: none;
 }
@@ -97,11 +89,12 @@
   opacity: 0.8;
 }
 
-.mintCompletionArea {
+.mintArea {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .mintAreaLeft {
@@ -109,9 +102,8 @@
   opacity: 0.75;
 }
 
-.mintAreaRight {
-  margin-right: 5%;
-  opacity: 0.75;
+.minted > p > span {
+  margin-right: 1rem;
 }
 
 .spacerTop {
@@ -139,7 +131,6 @@
   width: 48px;
   background-color: transparent;
   border: 1px solid grey;
-  border-radius: 8px;
   color: #fff;
   height: 48px;
   padding: 0 16px;
@@ -152,9 +143,8 @@
   height: 42px;
   border-radius: 50%;
   font-size: 2rem;
-  background-color: transparent;
-  border: 1px solid grey;
-  color: #fff;
+  background-color: #376071;
+  color: #FFEF00;
 }
 
 .quantityControlButton:disabled {

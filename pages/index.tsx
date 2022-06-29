@@ -91,32 +91,118 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.mintInfoContainer}>
-        <div className={styles.infoSide}>
+        <div className={styles.infoTop}>
           {/* Title of your NFT Collection */}
-          <h1>{contractMetadata?.name}</h1>
+          {/* <h1>{contractMetadata?.name}</h1> */}
+          <h2>MINT SMIRCS NFT</h2>
           {/* Description of your NFT Collection */}
-          <p className={styles.description}>{contractMetadata?.description}</p>
+          {/* <p className={styles.description}>{contractMetadata?.description}</p> */}
         </div>
 
-        <div className={styles.imageSide}>
+        <div className={styles.infoWallet}>
           {/* Image Preview of NFTs */}
-          <img
+          {/* <img
             className={styles.image}
             src={contractMetadata?.image}
             alt={`${contractMetadata?.name} preview image`}
-          />
+          /> */}
 
           {/* Amount claimed so far */}
-          <div className={styles.mintCompletionArea}>
-            <div className={styles.mintAreaLeft}>
-              <p>Total Minted</p>
-            </div>
-            <div className={styles.mintAreaRight}>
+          <div className={styles.mintArea}>
+  
+            {/* Show claim button or connect wallet button */}
+            {address ? (
+              // Sold out or show the claim button
+              isSoldOut ? (
+                <div>
+                  <h2>Sold Out</h2>
+                </div>
+              ) : isNotReady ? (
+                <div>
+                  <h2>Not ready to be minted yet</h2>
+                </div>
+              ) : (
+                <div>
+                  <h3>Quantity</h3>
+                  <div className={styles.quantityContainer}>
+                    <button
+                      className={`${styles.quantityControlButton}`}
+                      onClick={() => setQuantity(quantity - 1)}
+                      disabled={quantity <= 1}
+                    >
+                      -
+                    </button>
+
+                    <h4>{quantity}</h4>
+
+                    <button
+                      className={`${styles.quantityControlButton}`}
+                      onClick={() => setQuantity(quantity + 1)}
+                      disabled={
+                        quantity >=
+                        parseInt(
+                          activeClaimCondition?.quantityLimitPerTransaction ||
+                            '0'
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    className={`${styles.mainButton} ${styles.spacerTop} ${styles.spacerBottom}`}
+                    onClick={mint}
+                    disabled={claimNFT.isLoading}
+                  >
+                    {claimNFT.isLoading
+                      ? 'Minting...'
+                      : `Mint${quantity > 1 ? ` ${quantity}` : ''}${
+                          activeClaimCondition?.price.eq(0)
+                            ? ' (Free)'
+                            : activeClaimCondition?.currencyMetadata
+                                .displayValue
+                            ? ` (${formatUnits(
+                                priceToMint,
+                                activeClaimCondition.currencyMetadata.decimals
+                              )} ${
+                                activeClaimCondition?.currencyMetadata.symbol
+                              })`
+                            : ''
+                        }`}
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className={styles.buttons}>
+                <button
+                  className={styles.mainButton}
+                  onClick={connectWithMetamask}
+                >
+                  CONNECT METAMASK
+                </button>
+                <button
+                  className={styles.mainButton}
+                  onClick={connectWithWalletConnect}
+                >
+                  CONNECT WITH WALLET CONNECT
+                </button>
+                <button
+                  className={styles.mainButton}
+                  onClick={connectWithCoinbaseWallet}
+                >
+                  CONNECT WITH COINBASE WALLET
+                </button>
+              </div>
+            )}
+
+            <div className={styles.minted}>
               {claimedSupply && unclaimedSupply ? (
                 <p>
+                  <span>MINT</span>
                   {/* Claimed supply so far */}
-                  <b>{claimedSupply?.toNumber()}</b>
-                  {' / '}
+                  {claimedSupply?.toNumber()}
+                  {'/'}
                   {
                     // Add unclaimed and claimed supply to get the total supply
                     claimedSupply?.toNumber() + unclaimedSupply?.toNumber()
@@ -128,90 +214,6 @@ const Home: NextPage = () => {
               )}
             </div>
           </div>
-
-          {/* Show claim button or connect wallet button */}
-          {address ? (
-            // Sold out or show the claim button
-            isSoldOut ? (
-              <div>
-                <h2>Sold Out</h2>
-              </div>
-            ) : isNotReady ? (
-              <div>
-                <h2>Not ready to be minted yet</h2>
-              </div>
-            ) : (
-              <>
-                <p>Quantity</p>
-                <div className={styles.quantityContainer}>
-                  <button
-                    className={`${styles.quantityControlButton}`}
-                    onClick={() => setQuantity(quantity - 1)}
-                    disabled={quantity <= 1}
-                  >
-                    -
-                  </button>
-
-                  <h4>{quantity}</h4>
-
-                  <button
-                    className={`${styles.quantityControlButton}`}
-                    onClick={() => setQuantity(quantity + 1)}
-                    disabled={
-                      quantity >=
-                      parseInt(
-                        activeClaimCondition?.quantityLimitPerTransaction || '0'
-                      )
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  className={`${styles.mainButton} ${styles.spacerTop} ${styles.spacerBottom}`}
-                  onClick={mint}
-                  disabled={claimNFT.isLoading}
-                >
-                  {claimNFT.isLoading
-                    ? 'Minting...'
-                    : `Mint${quantity > 1 ? ` ${quantity}` : ''}${
-                        activeClaimCondition?.price.eq(0)
-                          ? ' (Free)'
-                          : activeClaimCondition?.currencyMetadata.displayValue
-                          ? ` (${formatUnits(
-                              priceToMint,
-                              activeClaimCondition.currencyMetadata.decimals
-                            )} ${
-                              activeClaimCondition?.currencyMetadata.symbol
-                            })`
-                          : ''
-                      }`}
-                </button>
-              </>
-            )
-          ) : (
-            <div className={styles.buttons}>
-              <button
-                className={styles.mainButton}
-                onClick={connectWithMetamask}
-              >
-                Connect MetaMask
-              </button>
-              <button
-                className={styles.mainButton}
-                onClick={connectWithWalletConnect}
-              >
-                Connect with Wallet Connect
-              </button>
-              <button
-                className={styles.mainButton}
-                onClick={connectWithCoinbaseWallet}
-              >
-                Connect with Coinbase Wallet
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

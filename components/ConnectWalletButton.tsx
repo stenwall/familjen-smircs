@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertDescription,
@@ -11,34 +11,34 @@ import {
   MenuButton,
   MenuList,
   Stack,
-  Text,
-} from "@chakra-ui/react";
-import { useConnect, useNetwork } from "@thirdweb-dev/react";
-import { SUPPORTED_CHAIN_ID } from "@thirdweb-dev/sdk";
-import React from "react";
-import { FiInfo } from "react-icons/fi";
-import { IoSwapHorizontalSharp } from "react-icons/io5";
-import { ChainIDToName, supportedChains } from "../utils/rpcUtils";
+  Text
+} from '@chakra-ui/react';
+import { useConnect, useNetwork } from '@thirdweb-dev/react';
+import { SUPPORTED_CHAIN_ID } from '@thirdweb-dev/sdk';
+import React from 'react';
+import { FiInfo } from 'react-icons/fi';
+import { IoSwapHorizontalSharp } from 'react-icons/io5';
+import { ChainIDToName, supportedChains } from '../utils/rpcUtils';
 
 interface ConnectWalletButtonProps {
   expectedChainId: number;
 }
 
 const connectorIdToImageUrl: Record<string, string> = {
-  MetaMask: "https://thirdweb.com/logos/metamask-fox.svg",
-  WalletConnect: "https://thirdweb.com/logos/walletconnect-logo.svg",
-  "Coinbase Wallet": "https://thirdweb.com/logos/coinbase-wallet-logo.svg",
-  Injected: "https://thirdweb.com//logos/wallet.png",
+  MetaMask: 'https://thirdweb.com/logos/metamask-fox.svg',
+  WalletConnect: 'https://thirdweb.com/logos/walletconnect-logo.svg',
+  'Coinbase Wallet': 'https://thirdweb.com/logos/coinbase-wallet-logo.svg',
+  Injected: 'https://thirdweb.com//logos/wallet.png'
 };
 
 export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
-  expectedChainId,
+  expectedChainId
 }) => {
   const [
     {
-      data: { chain: activeChain },
+      data: { chain: activeChain }
     },
-    switchNetwork,
+    switchNetwork
   ] = useNetwork();
 
   const [{ data, loading }, connect] = useConnect();
@@ -55,7 +55,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
             leftIcon={<IoSwapHorizontalSharp />}
             onClick={() => switchNetwork(expectedChainId)}
           >
-            Switch network {chainName ? `to ${chainName}` : ""}
+            Switch network {chainName ? `to ${chainName}` : ''}
           </Button>
           <Stack
             w="100%"
@@ -92,9 +92,9 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
           <Text>You wallet is connected to the wrong network.</Text>
           {expectedChainId && (
             <Text>
-              Please switch your wallet to{" "}
+              Please switch your wallet to{' '}
               <strong>
-                {supportedChains.find((c) => c.id === expectedChainId)?.name}
+                {supportedChains.find(c => c.id === expectedChainId)?.name}
               </strong>
               .
             </Text>
@@ -118,10 +118,10 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
       </MenuButton>
 
       <MenuList>
-        <Flex direction={{ base: "column", md: "row" }} gap={2} px={3}>
+        <Flex direction={{ base: 'column', md: 'row' }} gap={2} px={3}>
           {data.connectors
-            .filter((c) => c.ready)
-            .map((_connector) => {
+            .filter(c => c.ready)
+            .map(_connector => {
               if (!_connector.ready) {
                 return null;
               }
@@ -141,18 +141,18 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
                       maxWidth={6}
                       src={
                         Object.keys(connectorIdToImageUrl).includes(
-                          _connector.name,
+                          _connector.name
                         )
                           ? connectorIdToImageUrl[_connector.name]
-                          : connectorIdToImageUrl["Injected"]
+                          : connectorIdToImageUrl['Injected']
                       }
                       alt={_connector.name}
                     />
                   }
                 >
-                  {_connector.name !== "Injected"
+                  {_connector.name !== 'Injected'
                     ? _connector.name
-                    : "Mobile Wallet"}
+                    : 'Mobile Wallet'}
                 </Button>
               );
             })}

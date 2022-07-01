@@ -1,222 +1,102 @@
 import {
+  Center,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Image,
+  Spinner,
+  Stack
+} from '@chakra-ui/react';
+import {
   ChainId,
-  useClaimedNFTSupply,
   useContractMetadata,
-  useNetwork,
   useNFTDrop,
-  useUnclaimedNFTSupply,
-  useActiveClaimCondition,
-  useClaimNFT,
-  useWalletConnect,
-  useCoinbaseWallet
+  useActiveClaimCondition
 } from '@thirdweb-dev/react';
-import { useNetworkMismatch } from '@thirdweb-dev/react';
-import { useAddress, useMetamask } from '@thirdweb-dev/react';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import type { NextPage } from 'next';
-import React, { useState } from 'react';
-import styles from '../styles/Theme.module.css';
+import React from 'react';
+import ClaimButton from '../components/ClaimButton';
+import { Footer } from '../components/Footer';
+import { Header } from '../components/Header';
+import { DropSvg } from '../components/svg/drop';
 
-// Put Your NFT Drop Contract address from the dashboard here
-const myNftDropContractAddress = '0x2DE9Ab5C3E94EcF45002E10b7bF3213b2a5a5671';
+const contractAddress = '0xB1709c0Cd6452562F0f13b75FE49c6912b3C2059';
+const activeChainId = ChainId.Goerli;
 
 const Home: NextPage = () => {
-  const nftDrop = useNFTDrop(myNftDropContractAddress);
-  const address = useAddress();
-  const connectWithMetamask = useMetamask();
-  const connectWithWalletConnect = useWalletConnect();
-  const connectWithCoinbaseWallet = useCoinbaseWallet();
-  const isOnWrongNetwork = useNetworkMismatch();
-  const claimNFT = useClaimNFT(nftDrop);
-  const [, switchNetwork] = useNetwork();
-
-  // The amount the user claims
-  const [quantity, setQuantity] = useState(1); // default to 1
-
-  // Load contract metadata
-  const { data: contractMetadata } = useContractMetadata(
-    myNftDropContractAddress
+  const contract = useNFTDrop(contractAddress);
+  const activeClaimCondition = useActiveClaimCondition(contract);
+  const tokenAddress = activeClaimCondition?.data?.currencyAddress;
+  const { data: metadata, isLoading } = useContractMetadata(
+    contract?.getAddress()
   );
 
-  // Load claimed supply and unclaimed supply
-  const { data: unclaimedSupply } = useUnclaimedNFTSupply(nftDrop);
-  const { data: claimedSupply } = useClaimedNFTSupply(nftDrop);
-
-  // Load the active claim condition
-  const { data: activeClaimCondition } = useActiveClaimCondition(nftDrop);
-
-  // Check if there's NFTs left on the active claim phase
-  const isNotReady =
-    activeClaimCondition &&
-    parseInt(activeClaimCondition?.availableSupply) === 0;
-
-  // Check if there's any NFTs left
-  const isSoldOut = unclaimedSupply?.toNumber() === 0;
-
-  // Check price
-  const price = parseUnits(
-    activeClaimCondition?.currencyMetadata.displayValue || '0',
-    activeClaimCondition?.currencyMetadata.decimals
-  );
-
-  // Multiply depending on quantity
-  const priceToMint = price.mul(quantity);
-
-  // Loading state while we fetch the metadata
-  if (!nftDrop || !contractMetadata) {
-    return <div className={styles.container}>Loading...</div>;
+  if (isLoading) {
+    return (
+      <Center w="100%" h="100%">
+        <Stack direction="row" align="center">
+          <Spinner />
+          <Heading size="label.sm">Loading...</Heading>
+        </Stack>
+      </Center>
+    );
   }
 
-  // Function to mint/claim an NFT
-  const mint = async () => {
-    if (isOnWrongNetwork) {
-      switchNetwork && switchNetwork(ChainId.Mumbai);
-      return;
-    }
-
-    claimNFT.mutate(
-      { to: address as string, quantity },
-      {
-        onSuccess: () => {
-          alert(`Successfully minted NFT${quantity > 1 ? 's' : ''}!`);
-        },
-        onError: (err: any) => {
-          console.error(err);
-          alert(err?.message || 'Something went wrong');
-        }
-      }
-    );
-  };
-
   return (
-    <div className={styles.container}>
-      <div className={styles.mintInfoContainer}>
-        <div className={styles.infoTop}>
-          {/* Title of your NFT Collection */}
-          {/* <h1>{contractMetadata?.name}</h1> */}
-          <h2>MINT SMIRCS NFT</h2>
-          {/* Description of your NFT Collection */}
-          {/* <p className={styles.description}>{contractMetadata?.description}</p> */}
-        </div>
-
-        <div className={styles.infoWallet}>
-          {/* Image Preview of NFTs */}
-          {/* <img
-            className={styles.image}
-            src={contractMetadata?.image}
-            alt={`${contractMetadata?.name} preview image`}
-          /> */}
-
-          {/* Amount claimed so far */}
-          <div className={styles.mintArea}>
-  
-            {/* Show claim button or connect wallet button */}
-            {address ? (
-              // Sold out or show the claim button
-              isSoldOut ? (
-                <div>
-                  <h2>Sold Out</h2>
-                </div>
-              ) : isNotReady ? (
-                <div>
-                  <h2>Not ready to be minted yet</h2>
-                </div>
+    <Flex
+      position="fixed"
+      top={0}
+      left={0}
+      bottom={0}
+      right={0}
+      flexDir="column"
+      borderRadius="1rem"
+      overflow="hidden"
+      shadow="0px 1px 1px rgba(0,0,0,0.1)"
+      border="1px solid"
+      borderColor="blackAlpha.100"
+      bg="white"
+    >
+      <Header tokenAddress={tokenAddress} />
+      <Flex as="main" px="28px" w="100%" flexGrow={1}>
+        <Center w="100%" h="100%">
+          <Flex direction="column" align="center" gap={4} w="100%">
+            <Grid
+              bg="#F2F0FF"
+              border="1px solid rgba(0,0,0,.1)"
+              borderRadius="20px"
+              w="178px"
+              h="178px"
+              placeContent="center"
+              overflow="hidden"
+            >
+              {metadata?.image ? (
+                <Image
+                  objectFit="contain"
+                  w="100%"
+                  h="100%"
+                  src={metadata?.image}
+                  alt={metadata?.name}
+                />
               ) : (
-                <div>
-                  <h3>Quantity</h3>
-                  <div className={styles.quantityContainer}>
-                    <button
-                      className={`${styles.quantityControlButton}`}
-                      onClick={() => setQuantity(quantity - 1)}
-                      disabled={quantity <= 1}
-                    >
-                      -
-                    </button>
-
-                    <h4>{quantity}</h4>
-
-                    <button
-                      className={`${styles.quantityControlButton}`}
-                      onClick={() => setQuantity(quantity + 1)}
-                      disabled={
-                        quantity >=
-                        parseInt(
-                          activeClaimCondition?.quantityLimitPerTransaction ||
-                            '0'
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <button
-                    className={`${styles.mainButton} ${styles.spacerTop} ${styles.spacerBottom}`}
-                    onClick={mint}
-                    disabled={claimNFT.isLoading}
-                  >
-                    {claimNFT.isLoading
-                      ? 'Minting...'
-                      : `Mint${quantity > 1 ? ` ${quantity}` : ''}${
-                          activeClaimCondition?.price.eq(0)
-                            ? ' (Free)'
-                            : activeClaimCondition?.currencyMetadata
-                                .displayValue
-                            ? ` (${formatUnits(
-                                priceToMint,
-                                activeClaimCondition.currencyMetadata.decimals
-                              )} ${
-                                activeClaimCondition?.currencyMetadata.symbol
-                              })`
-                            : ''
-                        }`}
-                  </button>
-                </div>
-              )
-            ) : (
-              <div className={styles.buttons}>
-                <button
-                  className={styles.mainButton}
-                  onClick={connectWithMetamask}
-                >
-                  CONNECT METAMASK
-                </button>
-                <button
-                  className={styles.mainButton}
-                  onClick={connectWithWalletConnect}
-                >
-                  CONNECT WITH WALLET CONNECT
-                </button>
-                <button
-                  className={styles.mainButton}
-                  onClick={connectWithCoinbaseWallet}
-                >
-                  CONNECT WITH COINBASE WALLET
-                </button>
-              </div>
-            )}
-
-            <div className={styles.minted}>
-              {claimedSupply && unclaimedSupply ? (
-                <p>
-                  <span>MINT</span>
-                  {/* Claimed supply so far */}
-                  {claimedSupply?.toNumber()}
-                  {'/'}
-                  {
-                    // Add unclaimed and claimed supply to get the total supply
-                    claimedSupply?.toNumber() + unclaimedSupply?.toNumber()
-                  }
-                </p>
-              ) : (
-                // Show loading state if we're still loading the supply
-                <p>Loading...</p>
+                <Icon maxW="100%" maxH="100%" as={DropSvg} />
               )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Grid>
+            <Heading size="display.md" fontWeight="title" as="h1">
+              {metadata?.name}
+            </Heading>
+            {metadata?.description && (
+              <Heading noOfLines={2} as="h2" size="subtitle.md">
+                {metadata.description}
+              </Heading>
+            )}
+            <ClaimButton contract={contract} expectedChainId={activeChainId} />
+          </Flex>
+        </Center>
+      </Flex>
+      <Footer />
+    </Flex>
   );
 };
 

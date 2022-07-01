@@ -49,11 +49,13 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
       return (
         <Stack w="100%">
           <Button
+            fontSize="30px"
             w="full"
+            bg="#376071"
             color="#FFEC00"
             borderRadius="full"
             _hover={{
-              background: '#24353F'
+              background: '#334D5Bv'
             }}
             _active={{
               background: '#24353F'
@@ -64,7 +66,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
             leftIcon={<IoSwapHorizontalSharp />}
             onClick={() => switchNetwork(expectedChainId)}
           >
-            Switch network {chainName ? `to ${chainName}` : ''}
+            SWITCH NETWORK {chainName ? `TO ${chainName.toUpperCase()}` : ''}
           </Button>
           <Stack
             w="100%"
@@ -116,13 +118,16 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
   return (
     <Menu matchWidth>
       <MenuButton
+        fontSize="40px"
         isLoading={loading}
         as={Button}
         bg="#376071"
         color="#FFEC00"
+        py="2px"
+        px="10px"
         borderRadius="full"
         _hover={{
-          background: '#24353F'
+          background: '#334D5B'
         }}
         _active={{
           background: '#24353F'
@@ -152,6 +157,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 
               return (
                 <Button
+                  fontSize="22px"
                   flexGrow={1}
                   size="sm"
                   // variant="outline"

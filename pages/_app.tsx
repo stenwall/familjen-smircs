@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { css, Global } from '@emotion/react';
 import { fontsizeCss } from '../theme/typography';
 import { ChakraProvider } from '@chakra-ui/react';
+import chakraTheme from '../theme/index'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const activeChainId = ChainId.Goerli;
@@ -17,9 +18,19 @@ function MyApp({ Component, pageProps }: AppProps) {
           :root {
             ${fontsizeCss};
           }
+          ,
+          /* latin */
+          @font-face {
+            font-family: 'Merchant copy';
+            src: url('https://uploads-ssl.webflow.com/6278d92c988fe4187644f025/6278d92c988fe4d07e44f033_MERCHANT-COPY.REGULAR.TTF')
+              format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+          }
         `}
       />
-      <ChakraProvider>
+      <ChakraProvider theme={chakraTheme}>
         <ThirdwebProvider desiredChainId={activeChainId}>
           <Head>
             <title>SMIRCS NFT DROP</title>

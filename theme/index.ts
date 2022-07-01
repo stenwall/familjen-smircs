@@ -25,9 +25,9 @@ const chakraTheme: Theme = extendTheme(
       useSystemColorMode: false
     } as Theme['config'],
     fonts: {
-      heading: `"Inter", -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif`,
-      body: `"Inter", -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif`,
-      mono: `'IBM Plex Mono', monospace`
+      heading: `'Merchant copy'`,
+      body: `'Merchant copy'`,
+      mono: `monospace`
     },
     styles: {
       global: {

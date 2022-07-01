@@ -4,6 +4,7 @@ import '../styles/globals.css';
 import Head from 'next/head';
 import { css, Global } from '@emotion/react';
 import { fontsizeCss } from '../theme/typography';
+import { ChakraProvider } from '@chakra-ui/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const activeChainId = ChainId.Goerli;
@@ -18,16 +19,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         `}
       />
-      <ThirdwebProvider desiredChainId={activeChainId}>
-        <Head>
-          <title>SMIRCS NFT DROP</title>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-        </Head>
-        <Component {...pageProps} />
-      </ThirdwebProvider>
+      <ChakraProvider>
+        <ThirdwebProvider desiredChainId={activeChainId}>
+          <Head>
+            <title>SMIRCS NFT DROP</title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            />
+          </Head>
+          <Component {...pageProps} />
+        </ThirdwebProvider>
+      </ChakraProvider>
     </>
   );
 }

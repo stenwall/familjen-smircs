@@ -1,12 +1,12 @@
 import {
+  Box,
   Center,
   Flex,
   Grid,
   Heading,
-  Icon,
-  Image,
   Spinner,
-  Stack
+  Stack,
+  Text
 } from '@chakra-ui/react';
 import {
   ChainId,
@@ -17,9 +17,9 @@ import {
 import type { NextPage } from 'next';
 import React from 'react';
 import ClaimButton from '../components/ClaimButton';
-import { Footer } from '../components/Footer';
-import { Header } from '../components/Header';
-import { DropSvg } from '../components/svg/drop';
+// import { Footer } from '../components/Footer';
+// import { Header } from '../components/Header';
+// import { DropSvg } from '../components/svg/drop';
 
 const contractAddress = '0xB1709c0Cd6452562F0f13b75FE49c6912b3C2059';
 const activeChainId = ChainId.Goerli;
@@ -51,18 +51,18 @@ const Home: NextPage = () => {
       bottom={0}
       right={0}
       flexDir="column"
-      borderRadius="1rem"
+      // borderRadius="1rem"
       overflow="hidden"
-      shadow="0px 1px 1px rgba(0,0,0,0.1)"
-      border="1px solid"
-      borderColor="blackAlpha.100"
-      bg="white"
+      // shadow="0px 1px 1px rgba(0,0,0,0.1)"
+      // border="1px solid"
+      // borderColor="blackAlpha.100"
+      bg="#ECECE1"
     >
-      <Header tokenAddress={tokenAddress} />
+      {/* <Header tokenAddress={tokenAddress} /> */}
       <Flex as="main" px="28px" w="100%" flexGrow={1}>
         <Center w="100%" h="100%">
           <Flex direction="column" align="center" gap={4} w="100%">
-            <Grid
+            {/* <Grid
               bg="#F2F0FF"
               border="1px solid rgba(0,0,0,.1)"
               borderRadius="20px"
@@ -71,31 +71,34 @@ const Home: NextPage = () => {
               placeContent="center"
               overflow="hidden"
             >
-              {metadata?.image ? (
-                <Image
-                  objectFit="contain"
-                  w="100%"
-                  h="100%"
-                  src={metadata?.image}
-                  alt={metadata?.name}
-                />
-              ) : (
-                <Icon maxW="100%" maxH="100%" as={DropSvg} />
-              )}
-            </Grid>
-            <Heading size="display.md" fontWeight="title" as="h1">
-              {metadata?.name}
-            </Heading>
+            </Grid> */}
+            <ClaimButton contract={contract} expectedChainId={activeChainId} />
+            <Box
+              bg="#DC6051"
+              w="100%"
+              p={2}
+              color="#FFEC00"
+              borderRadius="15px"
+            >
+              <Text
+                size="display.md"
+                fontWeight="title"
+                as="h1"
+                align="center"
+                casing="uppercase"
+              >
+                {metadata?.name}
+              </Text>
+            </Box>
             {metadata?.description && (
               <Heading noOfLines={2} as="h2" size="subtitle.md">
                 {metadata.description}
               </Heading>
             )}
-            <ClaimButton contract={contract} expectedChainId={activeChainId} />
           </Flex>
         </Center>
       </Flex>
-      <Footer />
+      {/* <Footer /> */}
     </Flex>
   );
 };

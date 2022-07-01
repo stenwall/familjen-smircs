@@ -109,16 +109,31 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
       <MenuButton
         isLoading={loading}
         as={Button}
-        colorScheme="blue"
-        borderRadius="md"
+        bg="#376071"
+        color="#FFEC00"
+        borderRadius="full"
+        _hover={{
+          background: '#24353F'
+        }}
+        _active={{
+          background: '#24353F'
+        }}
+        _focus={{
+          background: '#24353F'
+        }}
         w="full"
         rightIcon={<ChevronDownIcon />}
       >
-        Connect Wallet
+        CONNECT WALLET
       </MenuButton>
 
-      <MenuList>
-        <Flex direction={{ base: 'column', md: 'row' }} gap={2} px={3}>
+      <MenuList bg="#DFDFD0" border="0">
+        <Flex
+          bg="#DFDFD0"
+          direction={{ base: 'column', md: 'row' }}
+          gap={2}
+          px={3}
+        >
           {data.connectors
             .filter(c => c.ready)
             .map(_connector => {
@@ -130,7 +145,17 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
                 <Button
                   flexGrow={1}
                   size="sm"
-                  variant="outline"
+                  // variant="outline"
+                  bg="#CFCFB1"
+                  _hover={{
+                    background: '#ECECE1'
+                  }}
+                  _active={{
+                    background: '#ECECE1'
+                  }}
+                  _focus={{
+                    background: '#ECECE1'
+                  }}
                   key={_connector.name}
                   isLoading={
                     loading && data?.connector?.name === _connector?.name

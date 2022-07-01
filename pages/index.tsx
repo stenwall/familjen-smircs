@@ -3,6 +3,7 @@ import {
   Center,
   Flex,
   Grid,
+  GridItem,
   Heading,
   Spinner,
   Stack,
@@ -14,6 +15,7 @@ import {
   useNFTDrop,
   useActiveClaimCondition
 } from '@thirdweb-dev/react';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import type { NextPage } from 'next';
 import React from 'react';
 import ClaimButton from '../components/ClaimButton';
@@ -28,6 +30,13 @@ const Home: NextPage = () => {
   const contract = useNFTDrop(contractAddress);
   const activeClaimCondition = useActiveClaimCondition(contract);
   const tokenAddress = activeClaimCondition?.data?.currencyAddress;
+  const quantityLimitPerTransaction =
+    activeClaimCondition.data?.quantityLimitPerTransaction;
+  const bnPrice = parseUnits(
+    activeClaimCondition.data?.currencyMetadata.displayValue || '0',
+    activeClaimCondition.data?.currencyMetadata.decimals
+  );
+  const priceToMint = bnPrice.mul(1);
   const { data: metadata, isLoading } = useContractMetadata(
     contract?.getAddress()
   );
@@ -62,43 +71,92 @@ const Home: NextPage = () => {
       <Flex as="main" px="28px" w="100%" flexGrow={1}>
         <Center w="100%" h="100%">
           <Flex direction="column" align="center" gap={4} w="100%">
-            {/* <Grid
-              bg="#F2F0FF"
-              border="1px solid rgba(0,0,0,.1)"
-              borderRadius="20px"
-              w="178px"
-              h="178px"
-              placeContent="center"
-              overflow="hidden"
-            >
-            </Grid> */}
             <ClaimButton contract={contract} expectedChainId={activeChainId} />
             <Box
               bg="#DC6051"
               w="100%"
-              p={2}
+              py="2px"
+              px="20px"
               color="#FFEC00"
               borderRadius="15px"
+              height="fit-content"
             >
               <Text
-                size="display.md"
-                fontWeight="title"
-                as="h1"
+                fontSize="20px"
+                color="#FFEC00"
                 align="center"
                 casing="uppercase"
+                m="0"
               >
                 {metadata?.name}
               </Text>
+              <Text
+                fontSize="10px"
+                color="#FFEC00"
+                align="left"
+                casing="uppercase"
+              >
+                MAX MINT/ {Number(quantityLimitPerTransaction)} PER WALLET
+              </Text>
+              {/* -- BYT UT GRID MOT FLEX
+              -- row-wrap */}
+              <Grid
+                color="#FFEC00"
+                templateColumns={'150px auto'}
+                gap="2px"
+                placeContent="left"
+                pb="20px"
+              >
+                <GridItem w="100%" h="10">
+                  <Flex flexDir="column">
+                    <Text fontSize="12px" color="#FFEC00" align="left" pb="7px">
+                      Amount
+                    </Text>
+                    <Text
+                      fontSize="15px"
+                      color="#FFEC00"
+                      align="left"
+                      overflow="hidden"
+                      whiteSpace="nowrap"
+                    >
+                      1 X SMIRCS..............................
+                    </Text>
+                  </Flex>
+                </GridItem>
+                <GridItem w="100%" h="10">
+                  <Flex flexDir="column">
+                    <Text fontSize="12px" color="#FFEC00" align="left" pb="7px">
+                      Total
+                    </Text>
+                    <Text
+                      fontSize="15px"
+                      color="#FFEC00"
+                      align="left"
+                      overflow="hidden"
+                    >
+                      {`= ${
+                        activeClaimCondition.data?.price.eq(0)
+                          ? '0 ETH'
+                          : activeClaimCondition.data?.currencyMetadata
+                              .displayValue
+                          ? ` (${formatUnits(
+                              priceToMint,
+                              activeClaimCondition.data.currencyMetadata
+                                .decimals
+                            )} ${
+                              activeClaimCondition.data?.currencyMetadata.symbol
+                            })`
+                          : ''
+                      }
+                      (PHASE-NAME/NO?)`}
+                    </Text>
+                  </Flex>
+                </GridItem>
+              </Grid>
             </Box>
-            {metadata?.description && (
-              <Heading noOfLines={2} as="h2" size="subtitle.md">
-                {metadata.description}
-              </Heading>
-            )}
           </Flex>
         </Center>
       </Flex>
-      {/* <Footer /> */}
     </Flex>
   );
 };

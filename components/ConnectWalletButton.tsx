@@ -50,8 +50,17 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
         <Stack w="100%">
           <Button
             w="full"
-            colorScheme="orange"
-            borderRadius="md"
+            color="#FFEC00"
+            borderRadius="full"
+            _hover={{
+              background: '#24353F'
+            }}
+            _active={{
+              background: '#24353F'
+            }}
+            _focus={{
+              background: '#24353F'
+            }}
             leftIcon={<IoSwapHorizontalSharp />}
             onClick={() => switchNetwork(expectedChainId)}
           >

@@ -167,10 +167,9 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
             }}
           >
             {/* <NumberInputStepper> */}
-            <NumberDecrementStepper
-              children={<FiMinus />}
-              style={{ ...stepperButtonStyles }}
-            />
+            <NumberDecrementStepper style={{ ...stepperButtonStyles }}>
+              <FiMinus />
+            </NumberDecrementStepper>
             <NumberInputField
               style={{
                 border: `none`,
@@ -179,10 +178,9 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
                 fontSize: `20px`
               }}
             />
-            <NumberIncrementStepper
-              children={<FiPlus />}
-              style={{ ...stepperButtonStyles }}
-            />
+            <NumberIncrementStepper style={{ ...stepperButtonStyles }}>
+              <FiPlus />
+            </NumberIncrementStepper>
 
             {/* </NumberInputStepper> */}
           </NumberInput>

@@ -39,7 +39,11 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   const chainId = useChainId();
   const [quantity, setQuantity] = useState(1);
   const loaded = useRef(false);
-  const toast = useToast();
+  const toast = useToast({
+    containerStyle: {
+      fontSize: '26px'
+    }
+  });
 
   const activeClaimCondition = useActiveClaimCondition(contract);
   const claimIneligibilityReasons = useClaimIneligibilityReasons(contract, {
@@ -88,7 +92,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
       {
         onSuccess: () => {
           toast({
-            title: 'Successfully claimed.',
+            title: 'SUCCESSFULLY CLAIMED.',
             status: 'success',
             duration: 5000,
             isClosable: true
@@ -97,7 +101,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
         onError: err => {
           console.error(err);
           toast({
-            title: 'Failed to claim drop.',
+            title: 'FAILED TO CLAIM DROP.',
             status: 'error',
             duration: 9000,
             isClosable: true
@@ -125,8 +129,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
     border: `0`,
     borderRadius: `50%`,
     fontSize: `30px`,
-    // padding: `10px`,
-    // textAlign: `center`,
     display: `grid`,
     alignContent: `center`,
     alignItems: `center`,
@@ -141,7 +143,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   return (
     <>
       <Stack spacing={4} align="center" w="100%">
-        <Flex w="100%" direction="row" gap={5}>
+        <Flex w="100%" direction="row" gap={5} pl="5px">
           <NumberInput
             inputMode="numeric"
             value={quantity}
@@ -223,7 +225,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
         </Flex>
       </Stack>
       {claimedSupply.data && (
-        <Text size="30px" align="left" alignSelf="flex-start">
+        <Text size="30px" align="left" alignSelf="flex-start" mb="30px">
           {`MINT ${claimedSupply.data?.toString()}/${(
             claimedSupply.data?.add(unclaimedSupply.data || 0) || 0
           ).toString()}`}

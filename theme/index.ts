@@ -12,7 +12,7 @@ import {
 
 const breakpoints = createBreakpoints({
   sm: '300px',
-  md: '500px',
+  md: '575px',
   lg: '62em',
   xl: '80em',
   '2xl': '96em'
@@ -32,7 +32,7 @@ const chakraTheme: Theme = extendTheme(
     styles: {
       global: {
         'html, body': {
-          backgroundColor: 'transparent',
+          backgroundColor: '#ECECE1',
           padding: 0,
           margin: 0,
           fontFeatureSettings: `'zero' 1`

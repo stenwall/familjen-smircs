@@ -5,7 +5,6 @@ import {
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
   Stack,
   Text,
   useToast

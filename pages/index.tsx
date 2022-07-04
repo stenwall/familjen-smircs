@@ -13,25 +13,64 @@ import {
   ChainId,
   useContractMetadata,
   useNFTDrop,
-  useActiveClaimCondition
+  useActiveClaimCondition,
+  useAddress,
+  useContractData,
+  useContract,
+  useClaimConditions
 } from '@thirdweb-dev/react';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useMemo } from 'react';
 import ClaimButton from '../components/ClaimButton';
 // import { Footer } from '../components/Footer';
 // import { Header } from '../components/Header';
 // import { DropSvg } from '../components/svg/drop';
 
-const contractAddress = '0xB1709c0Cd6452562F0f13b75FE49c6912b3C2059';
+// const contractAddress = '0xB1709c0Cd6452562F0f13b75FE49c6912b3C2059';
+const contractAddress = '0x8c9569C3192B33C7602e376Ee351F694386B00d0';
+
 const activeChainId = ChainId.Goerli;
 
 const Home: NextPage = () => {
+  const address = useAddress();
   const contract = useNFTDrop(contractAddress);
   const activeClaimCondition = useActiveClaimCondition(contract);
+  const claimConditions = useClaimConditions(contract);
   const tokenAddress = activeClaimCondition?.data?.currencyAddress;
+  console.log('activeClaimCondition', activeClaimCondition);
+  console.log('claimConditions', claimConditions);
+  const contractData = useContract(contractAddress);
+  console.log('contractData', contractData.contract);
+  // const contractMetaData = useContractMetadata
+
   const quantityLimitPerTransaction =
     activeClaimCondition.data?.quantityLimitPerTransaction;
+
+  const snapshot = activeClaimCondition.data?.snapshot;
+
+  const useDefault = useMemo(
+    () =>
+      !snapshot ||
+      snapshot?.find(user => user.address === address)?.maxClaimable === '0',
+    [snapshot, address]
+  );
+
+  const maxClaimable2 = isNaN(Number(quantityLimitPerTransaction))
+    ? quantityLimitPerTransaction
+    : Number(quantityLimitPerTransaction);
+
+  const maxClaimable = useDefault
+    ? isNaN(Number(quantityLimitPerTransaction))
+      ? 1000
+      : Number(quantityLimitPerTransaction)
+    : Number(snapshot?.find(user => user.address === address)?.maxClaimable);
+
+  console.log('useDefault', useDefault);
+  console.log('snapshot', snapshot);
+  console.log('maxClaimable2', maxClaimable2);
+  console.log('maxClaimable', maxClaimable);
+
   const bnPrice = parseUnits(
     activeClaimCondition.data?.currencyMetadata.displayValue || '0',
     activeClaimCondition.data?.currencyMetadata.decimals
@@ -40,6 +79,7 @@ const Home: NextPage = () => {
   const { data: metadata, isLoading } = useContractMetadata(
     contract?.getAddress()
   );
+  console.log('contractMetaaata', metadata)
 
   if (isLoading) {
     return (
@@ -96,7 +136,7 @@ const Home: NextPage = () => {
                 align="left"
                 casing="uppercase"
               >
-                MAX MINT/ {Number(quantityLimitPerTransaction)} PER WALLET
+                MAX MINT/ {quantityLimitPerTransaction} PER WALLET
               </Text>
               {/* -- BYT UT GRID MOT FLEX
               -- row-wrap */}
@@ -139,13 +179,13 @@ const Home: NextPage = () => {
                           ? '0 ETH'
                           : activeClaimCondition.data?.currencyMetadata
                               .displayValue
-                          ? ` (${formatUnits(
+                          ? ` ${formatUnits(
                               priceToMint,
                               activeClaimCondition.data.currencyMetadata
                                 .decimals
                             )} ${
                               activeClaimCondition.data?.currencyMetadata.symbol
-                            })`
+                            }`
                           : ''
                       }
                       (PHASE-NAME/NO?)`}

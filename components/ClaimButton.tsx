@@ -143,48 +143,8 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   return (
     <>
       <Stack spacing={4} align="center" w="100%">
-        <Flex w="100%" direction="row" gap={5} pl="5px">
-          <NumberInput
-            inputMode="numeric"
-            value={quantity}
-            onChange={(stringValue, value) => {
-              if (stringValue === '') {
-                setQuantity(1);
-              } else {
-                setQuantity(value);
-              }
-            }}
-            min={1}
-            max={lowerMaxClaimable}
-            maxW="100px"
-            style={{
-              display: `grid`,
-              gridTemplateColumns: `20px 50px 20px`,
-              alignContent: `center`,
-              alignItems: `center`,
-              justifyContent: `center`,
-              justifyItems: `center`,
-              gridGap: `5px`
-            }}
-          >
-            {/* <NumberInputStepper> */}
-            <NumberDecrementStepper style={{ ...stepperButtonStyles }}>
-              <FiMinus />
-            </NumberDecrementStepper>
-            <NumberInputField
-              style={{
-                border: `none`,
-                textAlign: `center`,
-                padding: `0`,
-                fontSize: `20px`
-              }}
-            />
-            <NumberIncrementStepper style={{ ...stepperButtonStyles }}>
-              <FiPlus />
-            </NumberIncrementStepper>
-
-            {/* </NumberInputStepper> */}
-          </NumberInput>
+        {/* <Flex w="100%" direction="row" gap={5} pl="5px"> */}
+        <Stack w="100%">
           <Button
             fontSize="30px"
             isLoading={claimMutation.isLoading || isLoading}
@@ -222,15 +182,64 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               ? parseIneligibility(claimIneligibilityReasons.data, quantity)
               : 'MINTING UNAVAILABLE'}
           </Button>
-        </Flex>
+        </Stack>
       </Stack>
-      {claimedSupply.data && (
-        <Text size="30px" align="left" alignSelf="flex-start" mb="30px">
-          {`MINT ${claimedSupply.data?.toString()}/${(
-            claimedSupply.data?.add(unclaimedSupply.data || 0) || 0
-          ).toString()}`}
-        </Text>
-      )}
+      <Flex
+        w="100%"
+        direction="row"
+        gap={5}
+        pl="5px"
+        mb="40px"
+        justify="space-between"
+      >
+        <NumberInput
+          inputMode="numeric"
+          value={quantity}
+          onChange={(stringValue, value) => {
+            if (stringValue === '') {
+              setQuantity(1);
+            } else {
+              setQuantity(value);
+            }
+          }}
+          min={1}
+          max={lowerMaxClaimable}
+          maxW="100px"
+          style={{
+            display: `grid`,
+            gridTemplateColumns: `20px 50px 20px`,
+            alignContent: `center`,
+            alignItems: `center`,
+            justifyContent: `center`,
+            justifyItems: `center`,
+            gridGap: `5px`
+          }}
+        >
+          <NumberDecrementStepper style={{ ...stepperButtonStyles }}>
+            <FiMinus />
+          </NumberDecrementStepper>
+          <NumberInputField
+            style={{
+              border: `none`,
+              textAlign: `center`,
+              padding: `0`,
+              fontSize: `20px`
+            }}
+          />
+          <NumberIncrementStepper style={{ ...stepperButtonStyles }}>
+            <FiPlus />
+          </NumberIncrementStepper>
+        </NumberInput>
+        {claimedSupply.data && (
+          <Flex alignItems="center">
+            <Text fontSize="20px" align="left">
+              {`MINT ${claimedSupply.data?.toString()}/${(
+                claimedSupply.data?.add(unclaimedSupply.data || 0) || 0
+              ).toString()}`}
+            </Text>
+          </Flex>
+        )}
+      </Flex>
     </>
   );
 };

@@ -48,7 +48,6 @@ const PhaseInfo: React.FC<PhaseInfoProps> = ({ activeClaim, allClaims }) => {
   };
 
   const getQuantity = maxQuantity => {
-    console.log(maxQuantity);
     return maxQuantity === 'unlimited'
       ? maxQuantity
       : `Max ${maxQuantity} / wallet`;

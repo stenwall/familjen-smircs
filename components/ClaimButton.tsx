@@ -168,7 +168,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
             {isSoldOut
               ? 'SOLD OUT'
               : canClaim
-              ? `MINT${quantity > 1 ? ` ${quantity}` : ''}${
+              ? `MINT${quantity >= 1 ? ` ${quantity}` : ''}${
                   activeClaimCondition.data?.price.eq(0)
                     ? ' (FREE)'
                     : activeClaimCondition.data?.currencyMetadata.displayValue

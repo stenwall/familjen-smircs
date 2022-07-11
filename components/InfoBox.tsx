@@ -26,7 +26,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   const activeMintPrice = activeClaim?.price.eq(0)
     ? '0 ETH'
     : activeClaim?.currencyMetadata.displayValue
-    ? ` ${formatUnits(priceToMint, activeClaim.currencyMetadata.decimals)} ${
+    ? `${formatUnits(priceToMint, activeClaim.currencyMetadata.decimals)} ${
         activeClaim?.currencyMetadata.symbol
       }`
     : '';

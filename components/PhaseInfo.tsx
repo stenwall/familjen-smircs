@@ -27,16 +27,16 @@ const PhaseInfo: React.FC<PhaseInfoProps> = ({ activeClaim, allClaims }) => {
   const getTime = (thisClaimTime, nextClaimTime?) => {
     const thisTime = new Date(thisClaimTime);
     const time = thisTime.toLocaleString('en-US', {
-      timeZone: 'PST',
+      timeZone: 'UTC',
       hour: '2-digit',
       minute: '2-digit'
     });
     if (nextClaimTime) {
       const nextTime = new Date(nextClaimTime);
       const hours = Math.abs(nextTime.getTime() - thisTime.getTime()) / 36e5;
-      return `${time} PST / ${Math.round(hours)}H`;
+      return `${time} UTC / ${Math.round(hours)}H`;
     }
-    return `${time} PST`;
+    return `${time} UTC`;
   };
 
   const getPrice = currencyMetadata => {
